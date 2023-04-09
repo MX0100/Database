@@ -68,4 +68,5 @@ select *from employee where idcard is not null;
 select *from employee where age!=88;
 select *from employee where age>=0 and age<=20;
 select *from employee where age>=0 && age<=20;
-select *from employee where age between 0 and 20;
+select *from employee where age between 0 and 20;//必须从小到大写数字
+select *from employee where gender='男' and idcard='211382200105312566';//and关键字
