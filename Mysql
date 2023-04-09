@@ -70,3 +70,28 @@ select *from employee where age>=0 and age<=20;
 select *from employee where age>=0 && age<=20;
 select *from employee where age between 0 and 20;//必须从小到大写数字
 select *from employee where gender='男' and idcard='211382200105312566';//and关键字
+select *from employee where age=10 or age=0 or age=20;
+select *from employee where age in(18,20,40);
+select *from employee where name like '_____';
+select *from employee where idcard like '%2';
+select count(*) from employee;
+select count(id) from employee;
+select avg(age)from employee;
+select max(age)from employee;
+select min(age)from employee;
+select sum(age) as'年龄之和'from employee where id<=2;
+/*1.根据性别分组，统计男性员工和女性员工的数量*/
+select gender,count(*)from employee group by gender;
+/*2.根据性别分组，统计男性员工和女性员工的平均年龄*/
+select gender,avg(age)from employee group by gender;
+alter table employee modify workaddress varchar(20);
+update employee set workaddress ='Halifax'where id=1;
+update employee set workaddress ='NewYork'where id=2;
+/*3.查询年龄小于45的员工，并根据工作地址分组，获取员工数量大于0的工作地址*/
+select workaddress,count(*) work_location from employee where age=10 group by workaddress having work_location>0;
++-------------+---------------+
+| workaddress | work_location |
++-------------+---------------+
+| Halifax     |             1 |
+| NewYork     |             1 |
++-------------+---------------+
