@@ -1,5 +1,6 @@
 [root@host]# mysql -u root -p   
 Enter password:******  # 登录后进入终端
+//////////////////////////////////////////////////////////////////////////
 DDL:
 select databases();//查看当前处于哪个数据库当中
 Create TABLE EMP(
@@ -29,8 +30,9 @@ Create TABLE EMP(
  alter table emp rename to employee;
  drop table if exists tb_users;
  truancate table employee;//删除表并重新创建
+ /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  DML:
- insert into employee(id, workerno, name, gender, age, idcard, entrydate) values (1,'1','lucas','男',10,'211382200104023512','2023-09-01');
+insert into employee(id, workerno, name, gender, age, idcard, entrydate) values (1,'1','lucas','男',10,'211382200104023512','2023-09-01');
 select * from employee;
 desc employee;
 insert into employee(id, workerno, name, gender, age, idcard, entrydate) values (2,'2','tomcat','男',10,'211382200105312566','2023-09-01');
