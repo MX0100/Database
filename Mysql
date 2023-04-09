@@ -30,4 +30,19 @@ Create TABLE EMP(
  drop table if exists tb_users;
  truancate table employee;//删除表并重新创建
  DML:
- 
+ insert into employee(id, workerno, name, gender, age, idcard, entrydate) values (1,'1','lucas','男',10,'211382200104023512','2023-09-01');
+select * from employee;
+desc employee;
+insert into employee(id, workerno, name, gender, age, idcard, entrydate) values (2,'2','tomcat','男',10,'211382200105312566','2023-09-01');
+select * from employee;
+insert into employee values (3,'3','kite','男',17,'211382200106112570','2023-09-01'),(4,'4','Lilly','女',18,'211382199904286552','2023-09-01');
+select * from employee;
++------+----------+--------+--------+------+--------------------+------------+
+| ID   | workerno | name   | gender | age  | idcard             | entrydate  |
++------+----------+--------+--------+------+--------------------+------------+
+|    1 | 1        | lucas  | 鐢?    |   10 | 211382200104023512 | 2023-09-01 |
+|    2 | 2        | tomcat | 鐢?    |   10 | 211382200105312566 | 2023-09-01 |
+|    3 | 3        | kite   | 鐢?    |   17 | 211382200106112570 | 2023-09-01 |
+|    4 | 4        | Lilly  | 濂?    |   18 | 211382199904286552 | 2023-09-01 |
++------+----------+--------+--------+------+--------------------+------------+
+
