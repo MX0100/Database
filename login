@@ -1,7 +1,8 @@
 [root@host]# mysql -u root -p   
 Enter password:******  # 登录后进入终端
 DDL:
- Create TABLE EMP(
+select databases();//查看当前处于哪个数据库当中
+Create TABLE EMP(
         ID INT COMMENT '编号',
         workerno varchar(10) comment'姓名',
         name varchar(10) comment'age',
@@ -10,7 +11,7 @@ DDL:
         idcard char(18) comment'身份证号',
         entrydate date comment'入职时间'    
         ) comment '员工表';
- desc emp;
+ desc emp;//显示表结构
 +-----------+---------------------+------+-----+---------+-------+
 | Field     | Type                | Null | Key | Default | Extra |
 +-----------+---------------------+------+-----+---------+-------+
@@ -23,3 +24,10 @@ DDL:
 | entrydate | date                | YES  |     | NULL    |       |
 +-----------+---------------------+------+-----+---------+-------+
  alter table emp add nickname varchar(20) comment '昵称';
+ ALTER TABLE EMP CHANGE NICKNAME USERNAME VARCHAR(30) COMMENT'用户名';//把nickname 改成username
+ alter table emp drop username;
+ alter table emp rename to employee;
+ drop table if exists tb_users;
+ truancate table employee;//删除表并重新创建
+ DML:
+ 
