@@ -95,3 +95,9 @@ select workaddress,count(*) work_location from employee where age=10 group by wo
 | Halifax     |             1 |
 | NewYork     |             1 |
 +-------------+---------------+
+where与having的区别
+执行时间不同：where是在分组之前进行过滤，不满足where条件，不参与分组；而having是分组之后对结果进行过滤。
+             执行顺序：where>聚合函数>having.
+判断条件不同:where不能对聚合函数进行判断，having可以。
+            分组之后，查询的字段一般为聚合函数和分组字段，查询其他的字段无任何意义.
+
