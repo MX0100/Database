@@ -102,3 +102,7 @@ where与having的区别
 判断条件不同:where不能对聚合函数进行判断，having可以。
             分组之后，查询的字段一般为聚合函数和分组字段，查询其他的字段无任何意义.
 DQL；排序查询
+insert into employee (ID, workerno, name, gender, age, idcard, entrydate, workaddress) values (3,3,'cat','男','13','1234567891234567','2023-4-9','Anshan');
+select *from employee order by age asc;
+select *from employee order by age desc;
+select *from employee order by age;
