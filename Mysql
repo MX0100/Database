@@ -62,3 +62,10 @@ DQL:
 select workerno from employee;
 select *from employee;
 select distinct age as'年龄'from employee;
+select *from employee where age<>20;
+select *from employee where idcard is null;
+select *from employee where idcard is not null;
+select *from employee where age!=88;
+select *from employee where age>=0 and age<=20;
+select *from employee where age>=0 && age<=20;
+select *from employee where age between 0 and 20;
