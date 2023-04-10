@@ -106,3 +106,11 @@ insert into employee (ID, workerno, name, gender, age, idcard, entrydate, workad
 select *from employee order by age asc;
 select *from employee order by age desc;
 select *from employee order by age;
+select *from employee order by age asc, entrydate desc ;//如果年龄一样 按entrydate排序
+DQL: 分页查询
+//查询第一页员工数据 每页展示10条记录
+select *from employee limit 0,10;//0可以不写----->起始索引，查询记录数。
+//查询第二页员工数据 每页展示10条记录----->起始索引=（页码-1）*页展示记录数 此题为（2-1）*10=10
+select *from employee limit 10,10;
+
+
