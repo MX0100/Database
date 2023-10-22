@@ -1,0 +1,161 @@
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+
+public class DBMS implements DBMSInterface {
+    private final SkipList<Integer, Student> studentNumberIndex;
+    private final SkipList<Integer, List<Student>> overallScoreIndex;
+
+    public DBMS() {
+        this.studentNumberIndex = new SkipList<>(4);
+        this.overallScoreIndex = new SkipList<>(4);
+    }
+
+    // 哈希函数基于学生编号
+    private int studentNumberHashFunction(String studentNumber) {
+        return Math.abs(studentNumber.hashCode()) % 50; // 使用hashCode的绝对值来确保正数范围
+    }
+
+    // 哈希函数基于总分
+    private int overallScoreHashFunction(int overallScore) {
+        return overallScore % 50;  // 假设哈希表大小或“桶”数量为50
+    }
+
+    public void insertStudent(Student student) {
+        int studentHashIndex = studentNumberHashFunction(student.getStudentNumber());
+        int scoreHashIndex = overallScoreHashFunction(student.getOverallScore());
+
+        studentNumberIndex.insert(studentHashIndex, student);
+
+        List<Student> studentsWithSameScore = overallScoreIndex.search(scoreHashIndex);
+        if (studentsWithSameScore == null) {
+            studentsWithSameScore = new LinkedList<>();
+            overallScoreIndex.insert(scoreHashIndex, studentsWithSameScore);
+        }
+        studentsWithSameScore.add(student);
+    }
+
+    public Student queryByStudentNumber(String studentNumber) {
+        int studentHashIndex = studentNumberHashFunction(studentNumber);
+        return studentNumberIndex.search(studentHashIndex);
+    }
+
+    public List<Student> queryByScore(int score) {
+        int scoreHashIndex = overallScoreHashFunction(score);
+        return overallScoreIndex.search(scoreHashIndex);
+    }
+
+    @Override
+    public void deleteStudent(Student student) {
+        int studentHashIndex = studentNumberHashFunction(student.getStudentNumber());
+        int scoreHashIndex = overallScoreHashFunction(student.getOverallScore());
+
+        studentNumberIndex.delete(studentHashIndex);
+
+        List<Student> studentsWithSameScore = overallScoreIndex.search(scoreHashIndex);
+        if (studentsWithSameScore != null) {
+            studentsWithSameScore.remove(student);
+            if (studentsWithSameScore.isEmpty()) {
+                overallScoreIndex.delete(scoreHashIndex);
+            }
+        }
+    }
+}
+
+
+class SkipList<T extends Comparable<T>, U> {
+    private final SkipNode<T, U> head;
+    private final int maxLevel;
+    private int level;
+    private final Random rand = new Random();
+
+    public SkipList(int maxLevel) {
+        this.maxLevel = maxLevel;
+        this.head = new SkipNode<>(maxLevel, null, null);
+        this.level = 0;
+    }
+
+    private int randomLevel() {
+        int lvl = 1;
+        while (rand.nextInt(2) == 0 && lvl < maxLevel) {
+            lvl++;
+        }
+        return lvl;
+    }
+
+    public void insert(T key, U value) {
+        @SuppressWarnings("unchecked")
+        SkipNode<T, U>[] update = new SkipNode[maxLevel + 1];
+        SkipNode<T, U> current = head;
+        for (int i = level; i >= 0; i--) {
+            while (current.next[i] != null && current.next[i].key.compareTo(key) < 0) {
+                current = current.next[i];
+            }
+            update[i] = current;
+        }
+
+        int nodeLevel = randomLevel();
+        if (nodeLevel > level) {
+            for (int i = level + 1; i <= nodeLevel; i++) {
+                update[i] = head;
+            }
+            level = nodeLevel;
+        }
+
+        SkipNode<T, U> newNode = new SkipNode<>(nodeLevel, key, value);
+        for (int i = 0; i <= nodeLevel; i++) {
+            newNode.next[i] = update[i].next[i];
+            update[i].next[i] = newNode;
+        }
+    }
+
+    public U search(T key) {
+        SkipNode<T, U> current = head;
+        for (int i = level; i >= 0; i--) {
+            while (current.next[i] != null && current.next[i].key.compareTo(key) < 0) {
+                current = current.next[i];
+            }
+        }
+        current = current.next[0];
+        return current != null && current.key.equals(key) ? current.value : null;
+    }
+
+    public void delete(T key) {
+        @SuppressWarnings("unchecked")
+        SkipNode<T, U>[] update = new SkipNode[maxLevel + 1];
+        SkipNode<T, U> current = head;
+        for (int i = level; i >= 0; i--) {
+            while (current.next[i] != null && current.next[i].key.compareTo(key) < 0) {
+                current = current.next[i];
+            }
+            update[i] = current;
+        }
+        current = current.next[0];
+
+        if (current != null && current.key.equals(key)) {
+            for (int i = 0; i <= level && update[i].next[i] == current; i++) {
+                update[i].next[i] = current.next[i];
+                if (head.next[i] == null) {
+                    level--;
+                }
+            }
+        }
+    }
+}
+
+class SkipNode<T extends Comparable<T>, U> {
+    public T key;
+    public U value;
+    public SkipNode<T, U>[] next;
+
+    @SuppressWarnings("unchecked")
+    public SkipNode(int level, T key, U value) {
+        this.next = new SkipNode[level + 1];
+        this.key = key;
+        this.value = value;
+    }
+}
